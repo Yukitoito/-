@@ -1,0 +1,27 @@
+#include iostream 
+#include list 
+using namespace std;  
+int main() { 
+  listint mylist; 
+  listint listmerge; 
+  for (int i = 1; i = 5; i++) { 
+    mylist.push_back(i); 
+  }  listmerge.insert(listmerge.begin(), mylist.begin(), mylist.end()); 
+  cout  listmerge ; 
+  for (listintiterator it = listmerge.begin(); it != listmerge.end(); ++it) { 
+    cout  it   ; 
+  } 
+  cout  endl; 
+  cout  mylist ; 
+  for (listintiterator it = mylist.begin(); it != mylist.end(); ++it) { 
+    cout  it   ; 
+  } 
+  cout  endl; 
+  mylist.merge(listmerge); 
+  cout  mylist after merging with listmerge ; 
+  for (listintiterator it = mylist.begin(); it != mylist.end(); ++it) { 
+    cout  it   ; 
+  } 
+  cout  endl; 
+  return 0; 
+}
