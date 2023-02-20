@@ -1,0 +1,100 @@
+#include <vector> 
+#include <algorithm> 
+#include <iomanip> 
+#include <cmath> 
+#include <cstring> 
+#include <iostream>  
+using namespace std; 
+bool toUInt(string str, unsigned int *num) 
+{ 
+	try 
+	{ 
+		*num = stoi(str); 
+		return true; 
+	} 
+	catch(exception &err) 
+	{ 
+		cout << "Ошибка ввода." << endl; 
+		cin.sync(); 
+		cin.get(); 
+		return false; 
+	} 
+} 
+string toUpperCase(string str) 
+{ 
+	transform(str.begin(), str.end(), str.begin(), ::toupper); 
+	return str; 
+} 
+int main()  
+{ 
+	setlocale(LC_ALL, "Russian"); 
+	unsigned int count, num; 
+	string repeat, tmp; 
+	cout << "Введите количество домов: ", cin >> tmp; 
+	if (!toUInt(tmp, &count)) 
+		return 1; 
+	vector<unsigned int> houses; 
+	for (unsigned int i = 0; i < count;) 
+	{ 
+		cout << "Введите количество жильцов " << setw((int)log10(count) + 1) << ++i <<" дома: ", cin >> tmp; 
+		if (!toUInt(tmp, &num)) 
+			return 1; 
+		houses.push_back(num); 
+	} 
+	do 
+	{ 
+		repeat = "Y"; 
+		cout << "0 - Узнать имеется ли такой дом и сколько там живет людей." << endl; 
+		cout << "1 - Удалить указанный дом из списка." << endl; 
+		cout << "2 - Добавить новый дом." << endl; 
+		cout << "3 - Вывести список домов с количеством их жильцов." << endl; 
+		cout << ">>> ", cin >> tmp; 
+		if (!toUInt(tmp, &num)) 
+			return 1; 
+		switch (num) 
+		{ 
+			case 0: 
+				cout << "Введите номер дома: ", cin >> tmp; 
+				if (!toUInt(tmp, &num)) 
+					return 1; 
+				if (num > 0 && num <= houses.size()) 
+					cout << "Дом " << num << " найден. Количество жильцов: " << houses[num - 1] << endl; 
+				else 
+					cout << "Дом " << num << " не найден." << endl; 
+				break; 
+			case 1: 
+				cout << "Введите номер дома: ", cin >> tmp; 
+				if (!toUInt(tmp, &num)) 
+					return 1; 
+				if (num > 0 && num <= houses.size()) 
+				{ 
+					houses.erase(houses.begin() + num - 1); 
+					cout << "Дом " << num << " удалён из списка." << endl; 
+				} 
+				else 
+					cout << "Дом " << num << " не найден." << endl; 
+				break; 
+			case 2: 
+				cout << "Введите количество жильцов нового дома: ", cin >> tmp; 
+				if (!toUInt(tmp, &num)) 
+					return 1; 
+				houses.push_back(num); 
+				cout << "Дом " << houses.size() << " с " << num << " жильцами добавлен." << endl; 
+				break; 
+			case 3: 
+				for (vector<unsigned int>::iterator it = houses.begin(); it != houses.end();) 
+					cout << "Количество жильцов " << setw((int)log10(houses.size()) + 1) << distance(houses.begin(), it) + 1 << " дома: " << *it++ << endl; 
+				break; 
+			default: 
+				cout << "Ошибка ввода." << endl; 
+				repeat = "N"; 
+		} 
+		if (toUpperCase(repeat) != "Y") 
+			break;		 
+		cout << "Продолжить? (Y[n]): ", cin >> repeat; 
+	} 
+	while (toUpperCase(repeat) == "Y"); 
+	cin.sync(); 
+	cin.get(); 
+	return 0; 
+}
